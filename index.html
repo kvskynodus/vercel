@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C.F.G Force Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&family=Geist:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- TELA: INÍCIO -->
+    <section class="tela" id="tela-home">
+      <header class="topo">
+        <div class="marca">
+          <div class="logo">CFG</div>
+          <h1>C.F.G FORCE STORE</h1>
+        </div>
+        <div class="acoes">
+          <button class="btn-redondo" onclick="abrirCategoria('suplementos')">🔍</button>
+          <button class="btn-redondo" onclick="alert('Você não tem notificações novas.')">🔔</button>
+        </div>
+      </header>
+
+      <div class="banner" onclick="abrirCategoria('suplementos')">
+        <span class="tag">OFERTA DO DIA</span>
+        <div>
+          <h2>LINHA MONSTRO COM ATÉ 67% OFF</h2>
+          <p>Comprar Agora →</p>
+        </div>
+      </div>
+
+      <div class="pilulas">
+        <button onclick="abrirCategoria('suplementos')">Suplementos</button>
+        <button onclick="abrirCategoria('roupas')">Roupas</button>
+        <button onclick="abrirCategoria('equipamentos')">Equipamentos</button>
+        <button onclick="abrirCategoria('acessorios')">Acessórios</button>
+      </div>
+
+      <div class="titulo-secao">
+        <h3>Mais Vendidos</h3>
+        <a onclick="abrirCategoria('suplementos')">Ver tudo</a>
+      </div>
+      <div class="grade" id="lista-home"></div>
+    </section>
+
+    <!-- TELA: CATEGORIAS -->
+    <section class="tela" id="tela-categorias">
+      <header class="cabecalho">
+        <button class="btn-redondo" onclick="mostrarTela('home')">←</button>
+        <div class="cabecalho-texto">
+          <h2 id="cat-titulo">Suplementos</h2>
+          <p id="cat-subtitulo">6 produtos encontrados</p>
+        </div>
+      </header>
+
+      <div class="filtros">
+        <button id="ordem-popular" class="ativo" onclick="ordenar('popular')">Popularidade</button>
+        <button id="ordem-preco" onclick="ordenar('preco')">Faixa de Preço</button>
+      </div>
+      <div class="grade" id="lista-categoria"></div>
+    </section>
+
+    <!-- TELA: DETALHES DO PRODUTO -->
+    <section class="tela" id="tela-produto">
+      <header class="cabecalho cabecalho-centro">
+        <button class="btn-redondo" onclick="mostrarTela('categorias')">←</button>
+        <h2>Detalhes do Produto</h2>
+        <button class="btn-redondo" id="btn-favorito" onclick="favoritar()">🤍</button>
+      </header>
+
+      <div class="foto-grande" id="det-foto"></div>
+
+      <div class="detalhe">
+        <h2 id="det-nome"></h2>
+        <p class="avaliacao" id="det-avaliacao"></p>
+        <p class="preco-grande"><span id="det-preco"></span> <s id="det-preco-antigo"></s></p>
+        <hr>
+
+        <div id="det-opcoes">
+          <h4>Selecione o tamanho</h4>
+          <div class="opcoes" id="det-tamanhos"></div>
+          <h4>Selecione o sabor</h4>
+          <div class="opcoes" id="det-sabores"></div>
+        </div>
+
+        <div class="compra">
+          <div class="contador">
+            <button onclick="mudarQtdDetalhe(-1)">-</button>
+            <span id="det-qtd">1</span>
+            <button class="mais" onclick="mudarQtdDetalhe(1)">+</button>
+          </div>
+          <button class="btn-principal" onclick="adicionarDetalhe()">🛒 ADICIONAR AO CARRINHO</button>
+        </div>
+
+        <div class="caixa">
+          <h4>Descrição do produto</h4>
+          <p id="det-descricao"></p>
+        </div>
+
+        <h3 class="titulo-relacionados">Frequentemente Comprados Juntos</h3>
+        <div class="grade" id="lista-relacionados"></div>
+      </div>
+    </section>
+
+    <!-- TELA: CARRINHO -->
+    <section class="tela" id="tela-carrinho">
+      <header class="cabecalho cabecalho-centro">
+        <button class="btn-redondo" onclick="mostrarTela('home')">←</button>
+        <h2>Carrinho</h2>
+        <span class="contagem" id="carrinho-itens">0 Itens</span>
+      </header>
+
+      <div id="lista-carrinho"></div>
+
+      <div id="area-resumo">
+        <div class="entrega">
+          <div class="btn-redondo">📍</div>
+          <div>
+            <strong>Entregar em:</strong>
+            <p>R. Visc. de Taunay, 427 - Centro, Joinville - SC</p>
+          </div>
+        </div>
+
+        <div class="resumo">
+          <h4>Resumo do pedido</h4>
+          <div class="linha"><span>Subtotal</span><strong id="resumo-subtotal">R$ 0,00</strong></div>
+          <div class="linha"><span>Frete (Sedex)</span><strong class="verde">Grátis</strong></div>
+          <hr>
+          <div class="linha total"><span>Total Geral</span><strong id="resumo-total">R$ 0,00</strong></div>
+          <button class="btn-principal" onclick="finalizar()">FINALIZAR COMPRA</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TELA: PERFIL -->
+    <section class="tela" id="tela-perfil">
+      <header class="cabecalho">
+        <div class="cabecalho-texto">
+          <h2>Perfil</h2>
+          <p>Esta tela ainda está em construção.</p>
+        </div>
+      </header>
+    </section>
+
+    <!-- MENU DE BAIXO -->
+    <nav class="menu">
+      <div class="marca menu-marca">
+        <div class="logo">CFG</div>
+        <strong>C.F.G FORCE STORE</strong>
+      </div>
+      <button id="aba-home" onclick="mostrarTela('home')"><span>🏠</span>Início</button>
+      <button id="aba-categorias" onclick="abrirCategoria('suplementos')"><span>▦</span>Categorias</button>
+      <button id="aba-carrinho" onclick="mostrarTela('carrinho')"><span>🛒<b id="selo">0</b></span>Carrinho</button>
+      <button id="aba-perfil" onclick="mostrarTela('perfil')"><span>👤</span>Perfil</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,914 @@
+/* Cores tiradas do Figma:
+   fundo       #360727
+   cards       #4d0f38 (borda #571642)
+   menu/escuro #27041d
+   rosa        #cf0179
+   texto claro #d4b2c8 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Geist', Arial, sans-serif;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+h1, h2, h3, h4, button {
+  font-family: 'Outfit', Arial, sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  color: white;
+}
+
+/* O "celular" no meio da tela */
+.app {
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: #360727;
+  position: relative;
+}
+
+.tela {
+  display: none;
+  padding-bottom: 110px;
+}
+
+.tela.ativa {
+  display: block;
+}
+
+/* ---------- Topo da home ---------- */
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 12px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #cf0179;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.marca h1 {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.acoes {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-redondo {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #4d0f38;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Banner ---------- */
+.banner {
+  margin: 16px 24px;
+  height: 190px;
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(120deg, #360727 30%, #7a0c52);
+  background-image: linear-gradient(rgba(54, 7, 39, 0.5), rgba(54, 7, 39, 0.5)), url("img/banner.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.tag {
+  background-color: #cf0179;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.banner h2 {
+  font-size: 22px;
+  font-weight: 900;
+  width: 150px;
+  margin-bottom: 6px;
+}
+
+.banner p {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d4b2c8;
+}
+
+/* ---------- Pílulas de categoria ---------- */
+.pilulas {
+  display: flex;
+  gap: 10px;
+  padding: 12px 24px 20px;
+  overflow-x: auto;
+}
+
+.pilulas button {
+  background-color: #4d0f38;
+  border: 1px solid #571642;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pilulas button:hover {
+  background-color: #cf0179;
+}
+
+.titulo-secao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px 16px;
+}
+
+.titulo-secao h3 {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.titulo-secao a {
+  color: #cf0179;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------- Grade e cards de produto ---------- */
+.grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 0 24px;
+}
+
+.card {
+  background-color: #4d0f38;
+  border: 1px solid #571642;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card-foto {
+  height: 170px;
+  background-color: #57002f;
+}
+
+.card-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  color: #d4b2c8;
+  text-transform: uppercase;
+}
+
+.card-meta b {
+  font-size: 12px;
+  color: white;
+}
+
+.card-meta .estrela {
+  color: #cf0179;
+}
+
+.card-nome {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-preco {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.btn-mais {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #cf0179;
+  font-size: 18px;
+}
+
+.btn-mais:hover {
+  background-color: #a80061;
+}
+
+/* ---------- Cabeçalho das outras telas ---------- */
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 24px 16px;
+}
+
+.cabecalho-centro {
+  justify-content: space-between;
+}
+
+.cabecalho-centro h2 {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.cabecalho-texto {
+  flex: 1;
+}
+
+.cabecalho-texto h2 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.cabecalho-texto p {
+  font-size: 12px;
+  color: #d4b2c8;
+}
+
+.contagem {
+  background-color: #4d0f38;
+  color: #cf0179;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 100px;
+}
+
+/* ---------- Filtros ---------- */
+.filtros {
+  display: flex;
+  gap: 12px;
+  padding: 0 24px 20px;
+}
+
+.filtros button {
+  background-color: #4d0f38;
+  border: 1px solid #571642;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.filtros button.ativo {
+  background-color: #cf0179;
+  border-color: #cf0179;
+}
+
+.vazio {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #d4b2c8;
+  padding: 40px 0;
+}
+
+/* ---------- Detalhe do produto ---------- */
+.foto-grande {
+  margin: 12px 24px;
+  height: 320px;
+  border-radius: 30px;
+  background-color: #57002f;
+  overflow: hidden;
+  position: relative;
+}
+
+.foto-grande img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.selo-vendas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #cf0179;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 3px 14px;
+  border-radius: 0 0 30px 0;
+}
+
+.detalhe {
+  padding: 12px 24px;
+}
+
+.detalhe h2 {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.avaliacao {
+  font-size: 12px;
+  font-weight: 600;
+  color: #d4b2c8;
+  margin-bottom: 12px;
+}
+
+.avaliacao .estrelas {
+  color: #cf0179;
+}
+
+.preco-grande {
+  font-size: 28px;
+  font-weight: 900;
+  color: #cf0179;
+}
+
+.preco-grande s {
+  font-size: 16px;
+  font-weight: 400;
+  color: #d4b2c8;
+  margin-left: 8px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #571642;
+  margin: 20px 0;
+}
+
+.detalhe h4 {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.opcoes button {
+  background-color: #4d0f38;
+  border: 1px solid #571642;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.opcoes button.ativo {
+  background-color: #cf0179;
+  border-color: #cf0179;
+}
+
+.compra {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.contador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #4d0f38;
+  border: 1px solid #571642;
+  border-radius: 18px;
+  height: 36px;
+  padding: 0 6px;
+  font-weight: 700;
+}
+
+.contador button {
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  background-color: #27041d;
+  font-size: 16px;
+}
+
+.contador button.mais {
+  background-color: #cf0179;
+}
+
+.btn-principal {
+  background-color: #cf0179;
+  height: 54px;
+  border-radius: 27px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.compra .btn-principal {
+  flex: 1;
+  font-size: 14px;
+}
+
+.btn-principal:hover {
+  background-color: #a80061;
+}
+
+.caixa {
+  background-color: #4d0f38;
+  border: 1px solid #571642;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.caixa h4 {
+  margin-bottom: 12px;
+}
+
+.caixa p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #d4b2c8;
+}
+
+.titulo-relacionados {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.detalhe .grade {
+  padding: 0;
+}
+
+/* ---------- Carrinho ---------- */
+#lista-carrinho {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 24px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #4d0f38;
+  border: 1px solid #571642;
+  border-radius: 24px;
+  padding: 16px;
+}
+
+.item-foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  background-color: #57002f;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.item-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.item-titulo {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.item-titulo h4 {
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.remover {
+  background: none;
+  color: #d4b2c8;
+  font-size: 14px;
+}
+
+.item-info p {
+  font-size: 11px;
+  color: #d4b2c8;
+}
+
+.item-preco {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.entrega {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.entrega strong {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+}
+
+.entrega p {
+  font-size: 12px;
+  color: #d4b2c8;
+}
+
+.resumo {
+  background-color: #27041d;
+  border: 1px solid #571642;
+  border-radius: 24px;
+  padding: 20px;
+  margin: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resumo h4 {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.resumo hr {
+  margin: 4px 0;
+}
+
+.linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #d4b2c8;
+}
+
+.linha strong {
+  color: white;
+  font-weight: 600;
+}
+
+.linha .verde {
+  color: #10b981;
+}
+
+.linha.total {
+  align-items: center;
+}
+
+.linha.total span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: white;
+}
+
+.linha.total strong {
+  font-size: 20px;
+  font-weight: 900;
+  color: #cf0179;
+}
+
+.carrinho-vazio {
+  text-align: center;
+  padding: 60px 24px;
+  color: #d4b2c8;
+}
+
+.carrinho-vazio button {
+  margin-top: 16px;
+  background-color: #cf0179;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-weight: 800;
+}
+
+/* ---------- Menu de baixo ---------- */
+.menu {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  height: 84px;
+  background-color: #27041d;
+  border-radius: 30px 30px 0 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 24px 20px;
+  z-index: 10;
+}
+
+.menu button {
+  background: none;
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #d4b2c8;
+}
+
+.menu button span {
+  font-size: 18px;
+  position: relative;
+}
+
+.menu button.ativo {
+  color: #cf0179;
+  font-weight: 700;
+}
+
+.menu b {
+  position: absolute;
+  top: -6px;
+  right: -12px;
+  background-color: #cf0179;
+  color: white;
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Foco visível para quem usa teclado */
+button:focus-visible {
+  outline: 2px solid #ff419e;
+  outline-offset: 2px;
+}
+
+/* Marca dentro do menu: só aparece na versão web */
+.menu-marca {
+  display: none;
+}
+
+/* ============================================================
+   VERSÃO WEB / RESPONSIVA
+   ============================================================ */
+
+/* ---------- Tablet (a partir de 700px) ---------- */
+@media (min-width: 700px) {
+  .app {
+    max-width: 760px;
+  }
+
+  .menu {
+    max-width: 760px;
+  }
+
+  .grade {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .banner {
+    height: 240px;
+  }
+
+  .banner h2 {
+    width: 260px;
+    font-size: 28px;
+  }
+}
+
+/* ---------- Desktop (a partir de 1024px) ---------- */
+@media (min-width: 1024px) {
+  body {
+    background-color: #360727;
+  }
+
+  .app {
+    max-width: 1200px;
+    padding-top: 72px; /* espaço do menu fixo no topo */
+  }
+
+  .tela {
+    padding-bottom: 60px;
+  }
+
+  /* Menu vira barra de navegação no topo */
+  .menu {
+    top: 0;
+    bottom: auto;
+    left: 0;
+    transform: none;
+    max-width: none;
+    height: 72px;
+    border-radius: 0;
+    border-bottom: 1px solid #571642;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 0 max(24px, calc((100% - 1200px) / 2 + 24px));
+  }
+
+  .menu-marca {
+    display: flex;
+    margin-right: auto;
+  }
+
+  .menu-marca strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .menu button {
+    width: auto;
+    flex-direction: row;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+
+  .menu button span {
+    font-size: 16px;
+  }
+
+  .menu button:hover {
+    background-color: #4d0f38;
+    color: white;
+  }
+
+  .menu button.ativo {
+    background-color: #4d0f38;
+  }
+
+  /* A marca já está no menu, então some do topo da home */
+  .topo .marca {
+    visibility: hidden;
+  }
+
+  /* Home */
+  .banner {
+    height: 340px;
+    padding: 40px;
+  }
+
+  .banner h2 {
+    width: 420px;
+    font-size: 42px;
+  }
+
+  .banner p {
+    font-size: 16px;
+  }
+
+  .pilulas {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .grade {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .card {
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: #cf0179;
+  }
+
+  .card-foto {
+    height: 220px;
+  }
+
+  /* Detalhe do produto: foto à esquerda, informações à direita */
+  #tela-produto.ativa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    column-gap: 16px;
+  }
+
+  #tela-produto .cabecalho {
+    grid-column: 1 / -1;
+  }
+
+  #tela-produto .foto-grande {
+    height: 520px;
+    position: sticky;
+    top: 96px;
+  }
+
+  #tela-produto .detalhe .grade {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .compra .btn-principal {
+    font-size: 15px;
+  }
+
+  /* Carrinho: itens à esquerda, resumo à direita */
+  #tela-carrinho.ativa {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    align-items: start;
+  }
+
+  #tela-carrinho .cabecalho {
+    grid-column: 1 / -1;
+  }
+
+  #tela-carrinho:has(#area-resumo[style*="none"]) #lista-carrinho {
+    grid-column: 1 / -1;
+  }
+
+  #area-resumo {
+    position: sticky;
+    top: 96px;
+  }
+
+  #area-resumo .entrega {
+    padding-top: 0;
+  }
+
+  .item-foto {
+    width: 100px;
+    height: 100px;
+  }
+}
