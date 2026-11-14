@@ -4,19 +4,125 @@ Loja virtual de suplementos, roupas e acessórios de academia, feita com **HTML,
 
 Este README explica **todas as linhas** dos três arquivos do projeto. Os números entre parênteses (ex.: `L12`) são os números de linha de cada arquivo, para você abrir o arquivo ao lado e acompanhar.
 
+O código foi dividido em **6 blocos**, e cada bloco foi desenvolvido por um integrante da equipe.
+
+## Como adicionar as imagens
+
+As fotos **não estão no repositório**. Sem elas, o site funciona, mas os cards mostram só um fundo rosa-escuro no lugar da foto. Para colocar as imagens:
+
+### Passo 1 — Criar a pasta `img`
+
+Crie uma pasta chamada **`img`** (tudo minúsculo) **ao lado** do `index.html`:
+
+```
+catholic-force/
+├── index.html
+├── style.css
+├── script.js
+├── README.md
+└── img/              ← crie esta pasta
+    ├── banner.png
+    ├── whey.png
+    └── ...
+```
+
+### Passo 2 — Salvar as fotos com os nomes exatos
+
+O código procura cada foto **pelo nome do arquivo**. O nome precisa ser **exatamente** este, com letras minúsculas, hífen e extensão `.png`:
+
+| Nome do arquivo | Onde aparece | Tamanho sugerido |
+|---|---|---|
+| `banner.png` | Banner "Oferta do dia" da home | 1600 × 600 px (horizontal) |
+| `whey.png` | Whey Protein Isolado 900g | 800 × 800 px (quadrada) |
+| `whey-concentrado.png` | Whey Concentrado 1kg | 800 × 800 px |
+| `whey-hidrolisado.png` | Whey Hidrolisado 900g | 800 × 800 px |
+| `proteina-vegana.png` | Proteína Vegana C.F.G 900g | 800 × 800 px |
+| `beef-protein.png` | Beef Protein Carnívoro 900g | 800 × 800 px |
+| `albumina.png` | Albumina Premium 500g | 800 × 800 px |
+| `creatina.png` | Creatina Monohidratada 300g | 800 × 800 px |
+| `pretreino.png` | Pré-Treino Apocalypse 300g | 800 × 800 px |
+| `camiseta.png` | Camiseta de Compressão C.F.G | 800 × 800 px |
+| `coqueteleira.png` | Coqueteleira Inox C.F.G | 800 × 800 px |
+
+As fotos são cortadas automaticamente para caber no espaço (`object-fit: cover` / `background-size: cover`), então não precisam ter o tamanho exato. Deixe o produto **centralizado**, com um pouco de margem em volta, para nada importante ser cortado. No banner, deixe o **lado esquerdo mais limpo**, porque é onde fica o texto.
+
+**Exportando do Figma:** selecione a imagem ou o frame → no painel da direita, em **Export**, clique em **+** → escolha **PNG** e **2x** → clique em **Export** → renomeie o arquivo para o nome da tabela e mova para a pasta `img/`.
+
+### Passo 3 — Conferir
+
+Abra o `index.html` no navegador e atualize com **Ctrl + F5**. Se alguma foto não aparecer:
+
+1. Aperte **F12** → aba **Console**. Uma mensagem como `404 (Not Found) img/whey.png` mostra qual arquivo não foi encontrado.
+2. Confira se o nome está **idêntico**. `Whey.png`, `whey.PNG` e `whey.png.png` são nomes diferentes; o Windows costuma esconder a extensão, então ative em *Explorador de Arquivos → Exibir → Extensões de nomes de arquivos*. No Windows, letras maiúsculas e minúsculas até funcionam, mas **na internet (GitHub Pages, hospedagem) não funcionam**.
+3. Confira se a pasta está no lugar certo: `img/` ao lado do `index.html`, e não dentro de outra pasta.
+
+### Passo 4 — Enviar para o GitHub
+
+```bash
+git add img
+git commit -m "Adiciona imagens dos produtos"
+git push
+```
+
+### Quero usar outro nome ou formato (`.jpg`, `.webp`)
+
+- **Produtos:** troque o campo `foto` do produto em `script.js` (L6–L25). Exemplo: `foto: "whey.png"` → `foto: "whey.jpg"`. O caminho `img/` é colocado automaticamente pela função `tagImagem` (`script.js` L61–L63).
+- **Banner:** troque `url("img/banner.png")` em `style.css` (L102).
+
+### Quero adicionar um produto novo com foto
+
+Coloque a imagem em `img/` (ex.: `luva.png`) e acrescente um objeto na lista `produtos` em `script.js`:
+
+```js
+{ id: "luva", nome: "Luva de Treino C.F.G", tipo: "Acessórios", grupo: "acessorios", nota: 4.8, preco: 49.90, foto: "luva.png", opcoes: false,
+  descricao: "Luva com palma emborrachada para mais firmeza na pegada." }
+```
+
+Ele aparece sozinho na categoria escolhida em `grupo`. Lembre de colocar uma **vírgula** depois do produto anterior.
+
+## Equipe e divisão em blocos
+
+| Bloco | Responsável | Parte do sistema | Arquivo e linhas |
+|---|---|---|---|
+| **1** | **Guilherme Borges** | Estrutura das telas (esqueleto HTML) | `index.html` L1–L165 |
+| **2** | **Maycom Wylliam** | Estilos base, home e cards de produto | `style.css` L1–L256 |
+| **3** | **Vinicius Duarte** | Estilos das telas internas (categorias, produto, carrinho) | `style.css` L257–L657 |
+| **4** | **Bruno Schwabe** | Menu de navegação, acessibilidade e responsividade | `style.css` L658–L914 |
+| **5** | **Kevin Patrick** | Dados, navegação e catálogo (JavaScript) | `script.js` L1–L157 |
+| **6** | **Ismael Ramos** | Detalhe do produto, carrinho e inicialização (JavaScript) | `script.js` L158–L332 |
+
+Como os blocos se encaixam:
+
+```
+              Bloco 1 (HTML) — Guilherme
+        classes │                  │ ids + onclick
+                ▼                  ▼
+   Blocos 2, 3, 4 (CSS)       Blocos 5, 6 (JS)
+   Maycom · Vinicius · Bruno  Kevin · Ismael
+                ▲                  │
+                └──────────────────┘
+       o JS gera HTML que usa as classes do CSS
+```
+
 ---
 
 ## Sumário
 
+- [Como adicionar as imagens](#como-adicionar-as-imagens)
+- [Equipe e divisão em blocos](#equipe-e-divisão-em-blocos)
+
 1. [Como rodar o projeto](#1-como-rodar-o-projeto)
 2. [Estrutura de arquivos](#2-estrutura-de-arquivos)
 3. [Visão geral: como as peças se conectam](#3-visão-geral-como-as-peças-se-conectam)
-4. [index.html — linha por linha](#4-indexhtml--linha-por-linha)
-5. [style.css — linha por linha](#5-stylecss--linha-por-linha)
-6. [script.js — linha por linha](#6-scriptjs--linha-por-linha)
-7. [Fluxos completos (o que acontece quando o usuário clica)](#7-fluxos-completos-o-que-acontece-quando-o-usuário-clica)
-8. [Limitações conhecidas e ideias de melhoria](#8-limitações-conhecidas-e-ideias-de-melhoria)
-9. [Glossário rápido](#9-glossário-rápido)
+4. [Bloco 1 — Guilherme Borges: estrutura das telas (index.html)](#4-bloco-1--guilherme-borges-estrutura-das-telas-indexhtml)
+5. [Bloco 2 — Maycom Wylliam: estilos base, home e cards (style.css L1–L256)](#5-bloco-2--maycom-wylliam-estilos-base-home-e-cards-stylecss-l1l256)
+6. [Bloco 3 — Vinicius Duarte: estilos das telas internas (style.css L257–L657)](#6-bloco-3--vinicius-duarte-estilos-das-telas-internas-stylecss-l257l657)
+7. [Bloco 4 — Bruno Schwabe: menu, acessibilidade e responsividade (style.css L658–L914)](#7-bloco-4--bruno-schwabe-menu-acessibilidade-e-responsividade-stylecss-l658l914)
+8. [Bloco 5 — Kevin Patrick: dados, navegação e catálogo (script.js L1–L157)](#8-bloco-5--kevin-patrick-dados-navegação-e-catálogo-scriptjs-l1l157)
+9. [Bloco 6 — Ismael Ramos: detalhe do produto, carrinho e inicialização (script.js L158–L332)](#9-bloco-6--ismael-ramos-detalhe-do-produto-carrinho-e-inicialização-scriptjs-l158l332)
+10. [Fluxos completos (o que acontece quando o usuário clica)](#10-fluxos-completos-o-que-acontece-quando-o-usuário-clica)
+11. [Limitações conhecidas e ideias de melhoria](#11-limitações-conhecidas-e-ideias-de-melhoria)
+12. [Glossário rápido](#12-glossário-rápido)
 
 ---
 
@@ -24,21 +130,7 @@ Este README explica **todas as linhas** dos três arquivos do projeto. Os númer
 
 1. Baixe/clone a pasta.
 2. Abra o arquivo `index.html` no navegador (duplo clique já funciona).
-3. (Opcional) Crie uma pasta `img/` ao lado do `index.html` com as fotos dos produtos e do banner. Os nomes esperados são:
-
-| Arquivo              | Usado em                           |
-|----------------------|------------------------------------|
-| `banner.png`         | Banner "Oferta do dia" da home     |
-| `whey.png`           | Whey Protein Isolado 900g          |
-| `whey-concentrado.png` | Whey Concentrado 1kg             |
-| `whey-hidrolisado.png` | Whey Hidrolisado 900g            |
-| `proteina-vegana.png`| Proteína Vegana C.F.G 900g         |
-| `beef-protein.png`   | Beef Protein Carnívoro 900g        |
-| `albumina.png`       | Albumina Premium 500g              |
-| `creatina.png`       | Creatina Monohidratada 300g        |
-| `pretreino.png`      | Pré-Treino Apocalypse 300g         |
-| `camiseta.png`       | Camiseta de Compressão C.F.G       |
-| `coqueteleira.png`   | Coqueteleira Inox C.F.G            |
+3. (Opcional) Adicione as fotos na pasta `img/`, seguindo o guia [Como adicionar as imagens](#como-adicionar-as-imagens).
 
 Se uma imagem não existir, o site **não quebra**: a imagem é escondida e aparece só o fundo rosa-escuro do card (veja `tagImagem` no JavaScript).
 
@@ -83,7 +175,13 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 
 ---
 
-## 4. `index.html` — linha por linha
+## 4. Bloco 1 — Guilherme Borges: estrutura das telas (`index.html`)
+
+> **Responsável:** Guilherme Borges · **Arquivo:** `index.html` (L1–L165, arquivo inteiro)
+>
+> **O que este bloco entrega:** o esqueleto de todo o site: as 5 telas (`<section class="tela">`), o menu de navegação, os textos fixos e as `<div>` vazias que o JavaScript preenche.
+>
+> **Ligação com os outros blocos:** as **classes** usadas aqui são estilizadas pelos Blocos 2, 3 e 4 (CSS). Os **ids** (`lista-home`, `det-nome`, `resumo-total`, `selo`...) são preenchidos pelos Blocos 5 e 6 (JS), e os `onclick` chamam funções desses mesmos blocos.
 
 ### 4.1 Cabeçalho do documento (L1–L11)
 
@@ -297,7 +395,13 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 
 ---
 
-## 5. `style.css` — linha por linha
+## 5. Bloco 2 — Maycom Wylliam: estilos base, home e cards (`style.css` L1–L256)
+
+> **Responsável:** Maycom Wylliam · **Arquivo:** `style.css` (L1–L256)
+>
+> **O que este bloco entrega:** a paleta de cores, o reset, as fontes, o "celular" (`.app`), o sistema que mostra e esconde as telas (`.tela` / `.tela.ativa`), o topo da home, o banner, as pílulas de categoria e a **grade + card de produto**. O card é reaproveitado na home, nas categorias e nos produtos relacionados.
+>
+> **Ligação com os outros blocos:** o `.btn-redondo` definido aqui é reaproveitado pelo Bloco 3 nos cabeçalhos. A grade e o card são ampliados pelo Bloco 4 no tablet e no desktop. O HTML dos cards é gerado por `criarCard` (Bloco 5).
 
 > Lembrete rápido de CSS: cada bloco tem um **seletor** (quem será estilizado) e, entre `{ }`, **propriedades** (`propriedade: valor;`). Seletores com `.` são classes, com `#` são ids, e sem nada são tags (`button`, `body`). Um espaço entre seletores (`.banner h2`) significa "um `h2` que está dentro de `.banner`".
 
@@ -540,7 +644,15 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L254 | `background-color: #a80061;` | rosa mais escuro. |
 | L255 | `}` | |
 
-### 5.8 Cabeçalho das telas internas (L257–L295)
+## 6. Bloco 3 — Vinicius Duarte: estilos das telas internas (`style.css` L257–L657)
+
+> **Responsável:** Vinicius Duarte · **Arquivo:** `style.css` (L257–L657)
+>
+> **O que este bloco entrega:** o visual das telas Categorias, Detalhes do Produto e Carrinho: cabeçalhos com botão voltar, filtros de ordenação, foto grande com selo, preço, botões de tamanho/sabor, contador `− 1 +`, botão principal rosa, caixa de descrição, itens do carrinho, endereço, resumo do pedido e mensagem de carrinho vazio.
+>
+> **Ligação com os outros blocos:** estiliza o HTML do Bloco 1 e o HTML gerado pelo Bloco 6 (`criarOpcoes`, `mostrarCarrinho`). O layout em duas colunas dessas telas no desktop fica no Bloco 4.
+
+### 6.1 Cabeçalho das telas internas (L257–L295)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -577,7 +689,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L294 | `border-radius: 100px;` | Pílula. |
 | L295 | `}` | |
 
-### 5.9 Filtros (L297–L323)
+### 6.2 Filtros (L297–L323)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -606,7 +718,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L322 | `padding: 40px 0;` | Espaço em cima e embaixo. |
 | L323 | `}` | |
 
-### 5.10 Detalhe do produto (L325–L496)
+### 6.3 Detalhe do produto (L325–L496)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -750,7 +862,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L495 | `padding: 0;` | tira o padding lateral, porque `.detalhe` já tem. |
 | L496 | `}` | |
 
-### 5.11 Carrinho (L498–L657)
+### 6.4 Carrinho (L498–L657)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -876,7 +988,15 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L655 | `font-weight: 800;` | |
 | L656 | `}` | |
 
-### 5.12 Menu de baixo (L658–L712)
+## 7. Bloco 4 — Bruno Schwabe: menu, acessibilidade e responsividade (`style.css` L658–L914)
+
+> **Responsável:** Bruno Schwabe · **Arquivo:** `style.css` (L658–L914)
+>
+> **O que este bloco entrega:** o menu de navegação fixo com o selo do carrinho, o contorno de foco para quem navega pelo teclado e as **duas media queries**: tablet (≥ 700px, 3 colunas) e desktop (≥ 1024px, menu no topo, 4 colunas, produto e carrinho em duas colunas com `sticky`).
+>
+> **Ligação com os outros blocos:** sobrescreve regras dos Blocos 2 e 3 em telas maiores. O destaque da aba ativa (`.ativo`) é trocado por `mostrarTela` (Bloco 5), e o selo é atualizado por `atualizarSelo` (Bloco 6). O seletor `:has()` reage ao `display: none` que `mostrarCarrinho` (Bloco 6) coloca no resumo.
+
+### 7.1 Menu de baixo (L658–L712)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -928,7 +1048,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L708–L710 | `display: flex; align-items: center; justify-content: center;` | Número centralizado. (O JS troca esse `display` para `none` quando o carrinho tem 0 itens.) |
 | L711 | `}` | |
 
-### 5.13 Acessibilidade e marca do menu (L713–L723)
+### 7.2 Acessibilidade e marca do menu (L713–L723)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -942,7 +1062,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L721 | `display: none;` | escondida no celular e tablet. |
 | L722 | `}` | |
 
-### 5.14 Responsividade — Tablet (L724–L750)
+### 7.3 Responsividade — Tablet (L724–L750)
 
 > `@media (min-width: 700px) { ... }` significa: "aplique as regras de dentro **só quando a janela tiver pelo menos 700px de largura**". As regras de dentro **sobrescrevem** as de cima.
 
@@ -958,7 +1078,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L746–L749 | `.banner h2 { width: 260px; font-size: 28px; }` | Título do banner maior e mais largo. |
 | L750 | `}` | Fecha a media query do tablet. |
 
-### 5.15 Responsividade — Desktop (L752–L914)
+### 7.4 Responsividade — Desktop (L752–L914)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1068,11 +1188,17 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 
 ---
 
-## 6. `script.js` — linha por linha
+## 8. Bloco 5 — Kevin Patrick: dados, navegação e catálogo (`script.js` L1–L157)
+
+> **Responsável:** Kevin Patrick · **Arquivo:** `script.js` (L1–L157)
+>
+> **O que este bloco entrega:** a lista de produtos (o "banco de dados" do site), o estado global, as funções de ajuda (`dinheiro`, `buscarProduto`, `tagImagem`), a navegação entre telas (`mostrarTela`), a criação dos cards (`criarCard`, `mostrarHome`) e a tela de categorias com filtro e ordenação.
+>
+> **Ligação com os outros blocos:** as funções de ajuda e o `criarCard` são usados o tempo todo pelo Bloco 6. O `mostrarTela` chama `mostrarCarrinho` (Bloco 6) ao abrir o carrinho. As funções são chamadas pelos `onclick` do Bloco 1.
 
 > O JavaScript usa um estilo bem simples e didático: `var` para variáveis, laços `for` tradicionais e HTML montado com strings. Não depende de nenhuma biblioteca.
 
-### 6.1 Dados dos produtos (L1–L26)
+### 8.1 Dados dos produtos (L1–L26)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1091,7 +1217,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L26 | `];` | Fecha a lista. Total: 10 produtos (8 suplementos, 1 roupa, 1 acessório, 0 equipamentos). |
 | L27 | *(em branco)* | |
 
-### 6.2 Nomes das categorias (L28–L33)
+### 8.2 Nomes das categorias (L28–L33)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1102,7 +1228,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L32 | `acessorios: "Acessórios"` | Aqui está o acento que a chave não tem. |
 | L33 | `};` | Uso: `nomesGrupos["acessorios"]` → `"Acessórios"`. |
 
-### 6.3 Estado do site (L35–L43)
+### 8.3 Estado do site (L35–L43)
 
 "Estado" = informações que mudam enquanto o usuário usa o site.
 
@@ -1118,7 +1244,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L42 | `var grupoAtual = "suplementos";` | Categoria exibida na tela de categorias. |
 | L43 | `var ordemAtual = "popular";` | Ordenação atual: `"popular"` ou `"preco"`. |
 
-### 6.4 Funções de ajuda (L45–L63)
+### 8.4 Funções de ajuda (L45–L63)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1137,7 +1263,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L62 | `return '<img src="img/' + p.foto + '" alt="' + p.nome + '" onerror="this.style.display=\'none\'">';` | Monta: `<img src="img/whey.png" alt="Whey Protein..." onerror="this.style.display='none'">`. O `alt` é o texto alternativo (leitores de tela / imagem quebrada). O `onerror` roda se a imagem não carregar e esconde a própria imagem (`this` = a imagem). As `\'` são aspas simples "escapadas" para não fechar a string do JS. |
 | L63 | `}` | |
 
-### 6.5 Navegação entre telas (L65–L87)
+### 8.5 Navegação entre telas (L65–L87)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1161,7 +1287,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L86 | `window.scrollTo(0, 0);` | Rola a página para o topo (senão a nova tela abriria no meio, onde estava a anterior). |
 | L87 | `}` | |
 
-### 6.6 Cards de produto (L89–L111)
+### 8.6 Cards de produto (L89–L111)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1186,7 +1312,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L110 | `document.getElementById("lista-home").innerHTML = html;` | Coloca todo o HTML dentro da `div#lista-home`. `innerHTML` interpreta o texto como HTML de verdade. |
 | L111 | `}` | |
 
-### 6.7 Tela de categorias (L113–L156)
+### 8.7 Tela de categorias (L113–L156)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1226,7 +1352,15 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L155 | `document.getElementById("lista-categoria").innerHTML = html;` | Coloca o resultado na tela. |
 | L156 | `}` | |
 
-### 6.8 Tela de detalhes do produto (L158–L232)
+## 9. Bloco 6 — Ismael Ramos: detalhe do produto, carrinho e inicialização (`script.js` L158–L332)
+
+> **Responsável:** Ismael Ramos · **Arquivo:** `script.js` (L158–L332)
+>
+> **O que este bloco entrega:** a tela de detalhes (`abrirProduto`, opções de tamanho/sabor, favorito, quantidade), toda a lógica do carrinho (adicionar, somar, remover, totais, selo do menu, finalizar compra) e as 3 linhas que **dão a partida** no site quando a página abre.
+>
+> **Ligação com os outros blocos:** usa `buscarProduto`, `dinheiro`, `tagImagem`, `criarCard` e `mostrarTela`, que são do Bloco 5. O HTML que gera usa as classes do Bloco 3, e o selo do menu usa o estilo do Bloco 4.
+
+### 9.1 Tela de detalhes do produto (L158–L232)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1296,7 +1430,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L231 | `alert("Produto adicionado ao carrinho!");` | Avisa o usuário. |
 | L232 | `}` | |
 
-### 6.9 Carrinho (L234–L325)
+### 9.2 Carrinho (L234–L325)
 
 | Linha | Código | Explicação |
 |---|---|---|
@@ -1379,7 +1513,7 @@ Paleta de cores (do Figma, documentada no topo do CSS):
 | L324 | `mostrarCarrinho();` | Redesenha (vai aparecer "Seu carrinho está vazio"). |
 | L325 | `}` | |
 
-### 6.10 Início do programa (L327–L332)
+### 9.3 Início do programa (L327–L332)
 
 Até aqui só foram **definidas** variáveis e funções. Estas 3 linhas são as que realmente **executam** algo assim que a página abre:
 
@@ -1392,32 +1526,32 @@ Até aqui só foram **definidas** variáveis e funções. Estas 3 linhas são as
 
 ---
 
-## 7. Fluxos completos (o que acontece quando o usuário clica)
+## 10. Fluxos completos (o que acontece quando o usuário clica)
 
-**Abrir o site**
+**Abrir o site** · _Blocos 5 e 6_
 `script.js` carrega → `mostrarHome()` cria os cards → `mostrarCarrinho()` monta o carrinho e o selo "3" → `mostrarTela("home")` exibe a home.
 
-**Clicar na pílula "Roupas"**
+**Clicar na pílula "Roupas"** · _Blocos 1 e 5_
 `abrirCategoria('roupas')` → `grupoAtual = "roupas"` → `mostrarCategoria()` filtra (1 produto: camiseta), ordena, escreve "Roupas / 1 produtos encontrados" → `mostrarTela("categorias")`.
 
-**Clicar em "Faixa de Preço"**
+**Clicar em "Faixa de Preço"** · _Blocos 1, 3 e 5_
 `ordenar('preco')` → `ordemAtual = "preco"` → `mostrarCategoria()` reordena do mais barato para o mais caro e pinta o botão de rosa.
 
-**Clicar num card**
+**Clicar num card** · _Blocos 2, 5 e 6_
 `abrirProduto('whey')` → preenche foto, nome, preço, descrição, opções e relacionados → `mostrarTela("produto")` (aba "Categorias" fica destacada).
 
-**Clicar no "+" de um card**
+**Clicar no "+" de um card** · _Blocos 4 e 6_
 `adicionarRapido(event, 'whey')` → `stopPropagation()` impede de abrir o produto → `colocarNoCarrinho('whey', 1, "")` soma 1 → `atualizarSelo()` muda o número do menu.
 
-**Na tela do produto: escolher sabor, aumentar quantidade e adicionar**
+**Na tela do produto: escolher sabor, aumentar quantidade e adicionar** · _Blocos 3 e 6_
 `escolherOpcao(this)` marca o sabor → `mudarQtdDetalhe(1)` aumenta `qtdDetalhe` → `adicionarDetalhe()` lê o sabor marcado → `colocarNoCarrinho(...)` → alerta "Produto adicionado".
 
-**Abrir o carrinho, mudar quantidades, remover, finalizar**
+**Abrir o carrinho, mudar quantidades, remover, finalizar** · _Blocos 3, 4 e 6_
 `mostrarTela('carrinho')` → `mostrarCarrinho()` desenha tudo e calcula o subtotal. Os botões −/+ chamam `mudarQtdCarrinho(i, ±1)`, o ✕ chama `removerItem(i)`, e todos redesenham com `mostrarCarrinho()`. `finalizar()` mostra o alerta e esvazia o carrinho.
 
 ---
 
-## 8. Limitações conhecidas e ideias de melhoria
+## 11. Limitações conhecidas e ideias de melhoria
 
 Comportamentos atuais que valem ser conhecidos por quem for mexer no código:
 
@@ -1436,7 +1570,7 @@ Comportamentos atuais que valem ser conhecidos por quem for mexer no código:
 
 ---
 
-## 9. Glossário rápido
+## 12. Glossário rápido
 
 | Termo | Significado |
 |---|---|
