@@ -2,7 +2,9 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#360727">
+  <meta name="color-scheme" content="dark">
   <title>C.F.G Force Store</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&family=Geist:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -10,66 +12,121 @@
 </head>
 <body>
 
+  <!-- Ícones (usados com <use href="#i-nome">) -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></symbol>
+    <symbol id="i-sino" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+    <symbol id="i-voltar" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+    <symbol id="i-coracao" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+    <symbol id="i-carrinho" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></symbol>
+    <symbol id="i-casa" viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-grade" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-usuario" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-pino" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-menos" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-fechar" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+    <symbol id="i-estrela" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+    <symbol id="i-pausa" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+    <symbol id="i-sacola" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  </svg>
+
   <div class="app">
 
     <!-- TELA: INÍCIO -->
-    <section class="tela" id="tela-home">
+    <section class="tela" id="tela-home" tabindex="-1">
       <header class="topo">
         <div class="marca">
-          <div class="logo">CFG</div>
+          <div class="logo" aria-hidden="true">CFG</div>
           <h1>C.F.G FORCE STORE</h1>
         </div>
         <div class="acoes">
-          <button class="btn-redondo" onclick="abrirCategoria('suplementos')">🔍</button>
-          <button class="btn-redondo" onclick="alert('Você não tem notificações novas.')">🔔</button>
+          <button class="btn-redondo" aria-label="Buscar" onclick="abrirCategoria('suplementos')"><svg class="icone" aria-hidden="true"><use href="#i-busca"/></svg></button>
+          <button class="btn-redondo" aria-label="Notificações" onclick="aviso('Você não tem notificações novas.')"><svg class="icone" aria-hidden="true"><use href="#i-sino"/></svg></button>
         </div>
       </header>
 
-      <div class="banner" onclick="abrirCategoria('suplementos')">
-        <span class="tag">OFERTA DO DIA</span>
-        <div>
-          <h2>LINHA MONSTRO COM ATÉ 67% OFF</h2>
-          <p>Comprar Agora →</p>
-        </div>
-      </div>
+      <!-- CARROSSEL DE PROMOÇÕES (arraste, use as bolinhas ou espere trocar sozinho) -->
+      <section class="carrossel" id="carrossel" aria-roledescription="carrossel" aria-label="Promoções">
+        <div class="carrossel-trilho" id="carrossel-trilho">
 
-      <div class="pilulas">
+          <div class="banner" role="button" tabindex="0" aria-roledescription="slide" aria-label="1 de 3" style="--img: url('img/banner.png')" onclick="abrirCategoria('suplementos')">
+            <span class="tag">OFERTA DO DIA</span>
+            <div>
+              <h2>LINHA MONSTRO COM ATÉ 67% OFF</h2>
+              <p>Comprar Agora →</p>
+            </div>
+          </div>
+
+          <div class="banner" role="button" tabindex="0" aria-roledescription="slide" aria-label="2 de 3" style="--img: url('img/banner-2.png')" onclick="abrirProduto('creatina')">
+            <span class="tag">FRETE GRÁTIS</span>
+            <div>
+              <h2>CREATINA PURA + FRETE GRÁTIS</h2>
+              <p>Aproveitar →</p>
+            </div>
+          </div>
+
+          <div class="banner" role="button" tabindex="0" aria-roledescription="slide" aria-label="3 de 3" style="--img: url('img/banner-3.png')" onclick="abrirCategoria('roupas')">
+            <span class="tag">LANÇAMENTO</span>
+            <div>
+              <h2>NOVA LINHA DE ROUPAS C.F.G</h2>
+              <p>Ver Coleção →</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="carrossel-controles">
+          <div class="pontos" id="carrossel-pontos" role="group" aria-label="Escolher promoção">
+            <button aria-label="Promoção 1" aria-current="true" onclick="irParaSlide(0)"></button>
+            <button aria-label="Promoção 2" onclick="irParaSlide(1)"></button>
+            <button aria-label="Promoção 3" onclick="irParaSlide(2)"></button>
+          </div>
+          <button class="btn-pausa" id="carrossel-pausa" aria-label="Pausar promoções" onclick="alternarPausa()">
+            <svg class="icone" aria-hidden="true"><use href="#i-pausa"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <nav class="pilulas" aria-label="Categorias">
         <button onclick="abrirCategoria('suplementos')">Suplementos</button>
         <button onclick="abrirCategoria('roupas')">Roupas</button>
         <button onclick="abrirCategoria('equipamentos')">Equipamentos</button>
         <button onclick="abrirCategoria('acessorios')">Acessórios</button>
-      </div>
+      </nav>
 
       <div class="titulo-secao">
         <h3>Mais Vendidos</h3>
-        <a onclick="abrirCategoria('suplementos')">Ver tudo</a>
+        <button class="link" onclick="abrirCategoria('suplementos')">Ver tudo</button>
       </div>
       <div class="grade" id="lista-home"></div>
     </section>
 
     <!-- TELA: CATEGORIAS -->
-    <section class="tela" id="tela-categorias">
+    <section class="tela" id="tela-categorias" tabindex="-1">
       <header class="cabecalho">
-        <button class="btn-redondo" onclick="mostrarTela('home')">←</button>
+        <button class="btn-redondo" aria-label="Voltar" onclick="mostrarTela('home')"><svg class="icone" aria-hidden="true"><use href="#i-voltar"/></svg></button>
         <div class="cabecalho-texto">
           <h2 id="cat-titulo">Suplementos</h2>
           <p id="cat-subtitulo">6 produtos encontrados</p>
         </div>
       </header>
 
-      <div class="filtros">
-        <button id="ordem-popular" class="ativo" onclick="ordenar('popular')">Popularidade</button>
-        <button id="ordem-preco" onclick="ordenar('preco')">Faixa de Preço</button>
+      <div class="filtros" role="group" aria-label="Ordenar">
+        <button id="ordem-popular" class="ativo" aria-pressed="true" onclick="ordenar('popular')">Popularidade</button>
+        <button id="ordem-preco" aria-pressed="false" onclick="ordenar('preco')">Faixa de Preço</button>
       </div>
-      <div class="grade" id="lista-categoria"></div>
+      <div class="grade" id="lista-categoria" aria-live="polite"></div>
     </section>
 
     <!-- TELA: DETALHES DO PRODUTO -->
-    <section class="tela" id="tela-produto">
+    <section class="tela" id="tela-produto" tabindex="-1">
       <header class="cabecalho cabecalho-centro">
-        <button class="btn-redondo" onclick="mostrarTela('categorias')">←</button>
+        <button class="btn-redondo" aria-label="Voltar" onclick="mostrarTela('categorias')"><svg class="icone" aria-hidden="true"><use href="#i-voltar"/></svg></button>
         <h2>Detalhes do Produto</h2>
-        <button class="btn-redondo" id="btn-favorito" onclick="favoritar()">🤍</button>
+        <button class="btn-redondo btn-favorito" id="btn-favorito" aria-label="Favoritar" aria-pressed="false" onclick="favoritar()"><svg class="icone" aria-hidden="true"><use href="#i-coracao"/></svg></button>
       </header>
 
       <div class="foto-grande" id="det-foto"></div>
@@ -82,18 +139,18 @@
 
         <div id="det-opcoes">
           <h4>Selecione o tamanho</h4>
-          <div class="opcoes" id="det-tamanhos"></div>
+          <div class="opcoes" id="det-tamanhos" role="group" aria-label="Selecione o tamanho"></div>
           <h4>Selecione o sabor</h4>
-          <div class="opcoes" id="det-sabores"></div>
+          <div class="opcoes" id="det-sabores" role="group" aria-label="Selecione o sabor"></div>
         </div>
 
         <div class="compra">
           <div class="contador">
-            <button onclick="mudarQtdDetalhe(-1)">-</button>
-            <span id="det-qtd">1</span>
-            <button class="mais" onclick="mudarQtdDetalhe(1)">+</button>
+            <button aria-label="Diminuir quantidade" onclick="mudarQtdDetalhe(-1)"><svg class="icone" aria-hidden="true"><use href="#i-menos"/></svg></button>
+            <span id="det-qtd" aria-live="polite">1</span>
+            <button class="mais" aria-label="Aumentar quantidade" onclick="mudarQtdDetalhe(1)"><svg class="icone" aria-hidden="true"><use href="#i-mais"/></svg></button>
           </div>
-          <button class="btn-principal" onclick="adicionarDetalhe()">🛒 ADICIONAR AO CARRINHO</button>
+          <button class="btn-principal" onclick="adicionarDetalhe()"><svg class="icone" aria-hidden="true"><use href="#i-carrinho"/></svg>ADICIONAR AO CARRINHO</button>
         </div>
 
         <div class="caixa">
@@ -107,9 +164,9 @@
     </section>
 
     <!-- TELA: CARRINHO -->
-    <section class="tela" id="tela-carrinho">
+    <section class="tela" id="tela-carrinho" tabindex="-1">
       <header class="cabecalho cabecalho-centro">
-        <button class="btn-redondo" onclick="mostrarTela('home')">←</button>
+        <button class="btn-redondo" aria-label="Voltar" onclick="mostrarTela('home')"><svg class="icone" aria-hidden="true"><use href="#i-voltar"/></svg></button>
         <h2>Carrinho</h2>
         <span class="contagem" id="carrinho-itens">0 Itens</span>
       </header>
@@ -118,7 +175,7 @@
 
       <div id="area-resumo">
         <div class="entrega">
-          <div class="btn-redondo">📍</div>
+          <div class="icone-redondo" aria-hidden="true"><svg class="icone"><use href="#i-pino"/></svg></div>
           <div>
             <strong>Entregar em:</strong>
             <p>R. Visc. de Taunay, 427 - Centro, Joinville - SC</p>
@@ -137,7 +194,7 @@
     </section>
 
     <!-- TELA: PERFIL -->
-    <section class="tela" id="tela-perfil">
+    <section class="tela" id="tela-perfil" tabindex="-1">
       <header class="cabecalho">
         <div class="cabecalho-texto">
           <h2>Perfil</h2>
@@ -147,16 +204,19 @@
     </section>
 
     <!-- MENU DE BAIXO -->
-    <nav class="menu">
+    <nav class="menu" aria-label="Principal">
       <div class="marca menu-marca">
-        <div class="logo">CFG</div>
+        <div class="logo" aria-hidden="true">CFG</div>
         <strong>C.F.G FORCE STORE</strong>
       </div>
-      <button id="aba-home" onclick="mostrarTela('home')"><span>🏠</span>Início</button>
-      <button id="aba-categorias" onclick="abrirCategoria('suplementos')"><span>▦</span>Categorias</button>
-      <button id="aba-carrinho" onclick="mostrarTela('carrinho')"><span>🛒<b id="selo">0</b></span>Carrinho</button>
-      <button id="aba-perfil" onclick="mostrarTela('perfil')"><span>👤</span>Perfil</button>
+      <button id="aba-home" onclick="mostrarTela('home')"><span><svg class="icone" aria-hidden="true"><use href="#i-casa"/></svg></span>Início</button>
+      <button id="aba-categorias" onclick="abrirCategoria('suplementos')"><span><svg class="icone" aria-hidden="true"><use href="#i-grade"/></svg></span>Categorias</button>
+      <button id="aba-carrinho" onclick="mostrarTela('carrinho')"><span><svg class="icone" aria-hidden="true"><use href="#i-carrinho"/></svg><b id="selo">0</b></span>Carrinho</button>
+      <button id="aba-perfil" onclick="mostrarTela('perfil')"><span><svg class="icone" aria-hidden="true"><use href="#i-usuario"/></svg></span>Perfil</button>
     </nav>
+
+    <!-- Aviso rápido (substitui os alert) -->
+    <div class="toast" id="toast" role="status" aria-live="polite"><svg class="icone" aria-hidden="true"><use href="#i-check"/></svg><span id="toast-texto"></span></div>
 
   </div>
 

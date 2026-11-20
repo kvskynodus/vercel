@@ -58,8 +58,27 @@ function buscarProduto(id) {
 }
 
 // Se a foto ainda não estiver na pasta img, a imagem some e fica só o fundo rosa escuro
-function tagImagem(p) {
-  return '<img src="img/' + p.foto + '" alt="' + p.nome + '" onerror="this.style.display=\'none\'">';
+// "decorativa" = a foto fica escondida do leitor de tela quando o nome já aparece ao lado
+function tagImagem(p, decorativa) {
+  var alt = decorativa ? "" : p.nome;
+  return '<img src="img/' + p.foto + '" alt="' + alt + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">';
+}
+
+// Ícone do "sprite" que está no começo do index.html
+function icone(nome, classe) {
+  return '<svg class="icone' + (classe ? " " + classe : "") + '" aria-hidden="true"><use href="#i-' + nome + '"/></svg>';
+}
+
+// Aviso rápido no rodapé (no lugar do alert)
+var timerAviso = null;
+function aviso(texto) {
+  var toast = document.getElementById("toast");
+  document.getElementById("toast-texto").innerText = texto;
+  toast.classList.add("visivel");
+  clearTimeout(timerAviso);
+  timerAviso = setTimeout(function () {
+    toast.classList.remove("visivel");
+  }, 2400);
 }
 
 // ------------------------------------------------------------
@@ -75,30 +94,35 @@ function mostrarTela(nome) {
   var abas = document.querySelectorAll(".menu button");
   for (var j = 0; j < abas.length; j++) {
     abas[j].classList.remove("ativo");
+    abas[j].removeAttribute("aria-current");
   }
   // o produto pertence à aba "Categorias"
   var aba = (nome == "produto") ? "categorias" : nome;
-  document.getElementById("aba-" + aba).classList.add("ativo");
+  var botaoAba = document.getElementById("aba-" + aba);
+  botaoAba.classList.add("ativo");
+  botaoAba.setAttribute("aria-current", "page");
 
   if (nome == "carrinho") {
     mostrarCarrinho();
   }
   window.scrollTo(0, 0);
+  // leva o foco do teclado / leitor de tela para a nova tela
+  document.getElementById("tela-" + nome).focus({ preventScroll: true });
 }
 
 // ------------------------------------------------------------
 // Cards de produto
 // ------------------------------------------------------------
 function criarCard(p) {
-  return '<div class="card" onclick="abrirProduto(\'' + p.id + '\')">' +
-    '<div class="card-foto">' + tagImagem(p) + '</div>' +
+  return '<article class="card">' +
+    '<div class="card-foto">' + tagImagem(p, true) + '</div>' +
     '<div class="card-info">' +
-      '<div class="card-meta"><span>' + p.tipo + '</span><b><span class="estrela">☆</span> ' + p.nota.toFixed(1) + '</b></div>' +
-      '<p class="card-nome">' + p.nome + '</p>' +
+      '<div class="card-meta"><span>' + p.tipo + '</span><b>' + icone("estrela", "estrela") + p.nota.toFixed(1) + '</b></div>' +
+      '<h3 class="card-nome"><button class="card-link" onclick="abrirProduto(\'' + p.id + '\')">' + p.nome + '</button></h3>' +
       '<div class="card-preco"><span>' + dinheiro(p.preco) + '</span>' +
-        '<button class="btn-mais" onclick="adicionarRapido(event, \'' + p.id + '\')">+</button></div>' +
+        '<button class="btn-mais" aria-label="Adicionar ' + p.nome + ' ao carrinho" onclick="adicionarRapido(event, \'' + p.id + '\')">' + icone("mais") + '</button></div>' +
     '</div>' +
-  '</div>';
+  '</article>';
 }
 
 function mostrarHome() {
@@ -142,15 +166,19 @@ function mostrarCategoria() {
 
   document.getElementById("cat-titulo").innerText = nomesGrupos[grupoAtual];
   document.getElementById("cat-subtitulo").innerText = lista.length + " produtos encontrados";
-  document.getElementById("ordem-popular").className = (ordemAtual == "popular") ? "ativo" : "";
-  document.getElementById("ordem-preco").className = (ordemAtual == "preco") ? "ativo" : "";
+  var popular = document.getElementById("ordem-popular");
+  var preco = document.getElementById("ordem-preco");
+  popular.className = (ordemAtual == "popular") ? "ativo" : "";
+  preco.className = (ordemAtual == "preco") ? "ativo" : "";
+  popular.setAttribute("aria-pressed", ordemAtual == "popular");
+  preco.setAttribute("aria-pressed", ordemAtual == "preco");
 
   var html = "";
   for (var j = 0; j < lista.length; j++) {
     html += criarCard(lista[j]);
   }
   if (lista.length == 0) {
-    html = '<p class="vazio">Ainda não temos produtos nesta categoria.</p>';
+    html = '<div class="vazio">' + icone("sacola") + '<p>Ainda não temos produtos nesta categoria.</p></div>';
   }
   document.getElementById("lista-categoria").innerHTML = html;
 }
@@ -170,7 +198,7 @@ function abrirProduto(id) {
   document.getElementById("det-preco-antigo").innerText = p.antigo ? dinheiro(p.antigo) : "";
   document.getElementById("det-descricao").innerText = p.descricao;
   document.getElementById("det-qtd").innerText = 1;
-  document.getElementById("btn-favorito").innerText = "🤍";
+  document.getElementById("btn-favorito").setAttribute("aria-pressed", "false");
 
   // tamanhos e sabores só aparecem nos suplementos
   var opcoes = document.getElementById("det-opcoes");
@@ -195,7 +223,7 @@ function criarOpcoes(idCaixa, lista, marcado) {
   var html = "";
   for (var i = 0; i < lista.length; i++) {
     var classe = (i == marcado) ? "ativo" : "";
-    html += '<button class="' + classe + '" onclick="escolherOpcao(this)">' + lista[i] + '</button>';
+    html += '<button class="' + classe + '" aria-pressed="' + (i == marcado) + '" onclick="escolherOpcao(this)">' + lista[i] + '</button>';
   }
   document.getElementById(idCaixa).innerHTML = html;
 }
@@ -204,13 +232,16 @@ function escolherOpcao(botao) {
   var irmaos = botao.parentNode.children;
   for (var i = 0; i < irmaos.length; i++) {
     irmaos[i].classList.remove("ativo");
+    irmaos[i].setAttribute("aria-pressed", "false");
   }
   botao.classList.add("ativo");
+  botao.setAttribute("aria-pressed", "true");
 }
 
 function favoritar() {
   var botao = document.getElementById("btn-favorito");
-  botao.innerText = (botao.innerText == "🤍") ? "💖" : "🤍";
+  var marcado = botao.getAttribute("aria-pressed") == "true";
+  botao.setAttribute("aria-pressed", !marcado);
 }
 
 function mudarQtdDetalhe(valor) {
@@ -228,7 +259,7 @@ function adicionarDetalhe() {
     sabor = "Sabor: " + escolhido.innerText;
   }
   colocarNoCarrinho(produtoAtual.id, qtdDetalhe, sabor);
-  alert("Produto adicionado ao carrinho!");
+  aviso("Produto adicionado ao carrinho!");
 }
 
 // ------------------------------------------------------------
@@ -237,6 +268,13 @@ function adicionarDetalhe() {
 function adicionarRapido(evento, id) {
   evento.stopPropagation(); // não abre a tela do produto
   colocarNoCarrinho(id, 1, "");
+
+  // pequeno "pulo" no botão + aviso, para a pessoa saber que deu certo
+  var botao = evento.currentTarget;
+  botao.classList.remove("ok");
+  void botao.offsetWidth;
+  botao.classList.add("ok");
+  aviso("Produto adicionado ao carrinho!");
 }
 
 function colocarNoCarrinho(id, qtd, extra) {
@@ -275,8 +313,15 @@ function totalItens() {
 function atualizarSelo() {
   var n = totalItens();
   var selo = document.getElementById("selo");
+  var mudou = selo.innerText != String(n);
   selo.innerText = n;
   selo.style.display = (n > 0) ? "flex" : "none";
+  document.getElementById("aba-carrinho").setAttribute("aria-label", "Carrinho, " + n + (n == 1 ? " item" : " itens"));
+  if (mudou) {
+    selo.classList.remove("pulso");
+    void selo.offsetWidth;
+    selo.classList.add("pulso");
+  }
 }
 
 function mostrarCarrinho() {
@@ -289,16 +334,16 @@ function mostrarCarrinho() {
     subtotal = subtotal + p.preco * item.qtd;
 
     html += '<div class="item">' +
-      '<div class="item-foto">' + tagImagem(p) + '</div>' +
+      '<div class="item-foto">' + tagImagem(p, true) + '</div>' +
       '<div class="item-info">' +
         '<div class="item-titulo"><h4>' + p.nome + '</h4>' +
-          '<button class="remover" onclick="removerItem(' + i + ')">✕</button></div>' +
+          '<button class="remover" aria-label="Remover ' + p.nome + '" onclick="removerItem(' + i + ')">' + icone("fechar") + '</button></div>' +
         '<p>' + item.extra + '</p>' +
         '<div class="item-preco"><span>' + dinheiro(p.preco) + '</span>' +
           '<div class="contador">' +
-            '<button onclick="mudarQtdCarrinho(' + i + ', -1)">-</button>' +
-            '<span>' + item.qtd + '</span>' +
-            '<button class="mais" onclick="mudarQtdCarrinho(' + i + ', 1)">+</button>' +
+            '<button aria-label="Diminuir quantidade de ' + p.nome + '" onclick="mudarQtdCarrinho(' + i + ', -1)">' + icone("menos") + '</button>' +
+            '<span aria-live="polite">' + item.qtd + '</span>' +
+            '<button class="mais" aria-label="Aumentar quantidade de ' + p.nome + '" onclick="mudarQtdCarrinho(' + i + ', 1)">' + icone("mais") + '</button>' +
           '</div></div>' +
       '</div>' +
     '</div>';
@@ -306,7 +351,7 @@ function mostrarCarrinho() {
 
   var vazio = (carrinho.length == 0);
   if (vazio) {
-    html = '<div class="carrinho-vazio"><p>Seu carrinho está vazio.</p>' +
+    html = '<div class="carrinho-vazio">' + icone("carrinho") + '<p>Seu carrinho está vazio.</p>' +
            '<button onclick="abrirCategoria(\'suplementos\')">Ver produtos</button></div>';
   }
 
@@ -319,14 +364,130 @@ function mostrarCarrinho() {
 }
 
 function finalizar() {
-  alert("Pedido finalizado! Obrigado por comprar na C.F.G Force Store.");
+  aviso("Pedido finalizado! Obrigado por comprar na C.F.G Force Store.");
   carrinho = [];
   mostrarCarrinho();
 }
 
 // ------------------------------------------------------------
+// Detalhes de interface
+// ------------------------------------------------------------
+// Elementos com role="button" (ex.: banner) também respondem a Enter e Espaço
+document.addEventListener("keydown", function (e) {
+  var alvo = e.target;
+  if (alvo.getAttribute && alvo.getAttribute("role") == "button" && (e.key == "Enter" || e.key == " ")) {
+    e.preventDefault();
+    alvo.click();
+  }
+});
+
+// Mostra a linha embaixo do cabeçalho só depois de rolar a página
+window.addEventListener("scroll", function () {
+  document.body.classList.toggle("rolou", window.scrollY > 4);
+}, { passive: true });
+
+// ------------------------------------------------------------
+// Carrossel de promoções
+// ------------------------------------------------------------
+var slideAtual = 0;
+var timerCarrossel = null;
+var carrosselPausado = false;   // pausado pelo botão
+var carrosselEmUso = false;     // mouse em cima / foco / dedo na tela
+var menosMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function slides() {
+  return document.querySelectorAll("#carrossel-trilho .banner");
+}
+
+function irParaSlide(indice) {
+  var lista = slides();
+  slideAtual = (indice + lista.length) % lista.length;
+  var trilho = document.getElementById("carrossel-trilho");
+  trilho.scrollTo({ left: lista[slideAtual].offsetLeft - lista[0].offsetLeft, behavior: menosMovimento ? "auto" : "smooth" });
+  marcarPonto();
+}
+
+function marcarPonto() {
+  var pontos = document.querySelectorAll("#carrossel-pontos button");
+  for (var i = 0; i < pontos.length; i++) {
+    if (i == slideAtual) {
+      pontos[i].setAttribute("aria-current", "true");
+    } else {
+      pontos[i].removeAttribute("aria-current");
+    }
+  }
+}
+
+function proximoSlide() {
+  // só troca sozinho se a home estiver aberta e ninguém estiver mexendo
+  var naHome = document.getElementById("tela-home").classList.contains("ativa");
+  if (naHome && !carrosselEmUso && !document.hidden) {
+    irParaSlide(slideAtual + 1);
+  }
+}
+
+function iniciarCarrossel() {
+  clearInterval(timerCarrossel);
+  if (!carrosselPausado) {
+    timerCarrossel = setInterval(proximoSlide, 5000);
+  }
+}
+
+function alternarPausa() {
+  carrosselPausado = !carrosselPausado;
+  var botao = document.getElementById("carrossel-pausa");
+  botao.setAttribute("aria-label", carrosselPausado ? "Continuar promoções" : "Pausar promoções");
+  botao.querySelector("use").setAttribute("href", carrosselPausado ? "#i-play" : "#i-pausa");
+  if (carrosselPausado) {
+    clearInterval(timerCarrossel);
+  } else {
+    iniciarCarrossel();
+  }
+}
+
+function configurarCarrossel() {
+  var carrossel = document.getElementById("carrossel");
+  var trilho = document.getElementById("carrossel-trilho");
+
+  // quando a pessoa arrasta, descobre qual slide ficou na tela
+  var esperaRolagem = null;
+  trilho.addEventListener("scroll", function () {
+    clearTimeout(esperaRolagem);
+    esperaRolagem = setTimeout(function () {
+      var largura = slides()[0].offsetWidth + 12; // 12 = gap do CSS
+      slideAtual = Math.round(trilho.scrollLeft / largura);
+      marcarPonto();
+    }, 80);
+  }, { passive: true });
+
+  // pausa enquanto alguém está usando
+  function emUso() { carrosselEmUso = true; }
+  function livre() { carrosselEmUso = false; iniciarCarrossel(); }
+  carrossel.addEventListener("mouseenter", emUso);
+  carrossel.addEventListener("mouseleave", livre);
+  carrossel.addEventListener("focusin", emUso);
+  carrossel.addEventListener("focusout", livre);
+  trilho.addEventListener("touchstart", emUso, { passive: true });
+  trilho.addEventListener("touchend", livre, { passive: true });
+
+  // setas do teclado trocam o slide
+  carrossel.addEventListener("keydown", function (e) {
+    if (e.key == "ArrowRight") { irParaSlide(slideAtual + 1); }
+    if (e.key == "ArrowLeft")  { irParaSlide(slideAtual - 1); }
+  });
+
+  // quem pediu menos movimento começa com o carrossel parado
+  if (menosMovimento) {
+    alternarPausa();
+  } else {
+    iniciarCarrossel();
+  }
+}
+
+// ------------------------------------------------------------
 // Começo
 // ------------------------------------------------------------
+configurarCarrossel();
 mostrarHome();
 mostrarCarrinho();
 mostrarTela("home");
